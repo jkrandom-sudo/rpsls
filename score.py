@@ -4,6 +4,21 @@ from pathlib import Path
 
 DEFAULT_PATH = Path.home() / ".rpsls_scores.json"
 MAX_SCORES = 10
+MAX_NAME_LENGTH = 20
+MIN_NAME_LENGTH = 1
+
+
+def validate_name(name):
+    """Validate and sanitize player name for scoreboard.
+
+    Returns (is_valid, cleaned_name).
+    """
+    if not name:
+        return False, ""
+    cleaned = name.strip()[:MAX_NAME_LENGTH]
+    if len(cleaned) < MIN_NAME_LENGTH:
+        return False, ""
+    return True, cleaned
 
 
 def load(path=None):

@@ -37,6 +37,10 @@ STRINGS = {
         "move_scissors": "scissors",
         "move_lizard": "lizard",
         "move_spock": "spock",
+        "score_entry": "{idx}. {name} - {score} ({difficulty})",
+        "difficulty_easy": "easy",
+        "difficulty_normal": "normal",
+        "difficulty_hard": "hard",
     },
     "zh": {
         "title": "石头剪刀布蜥蜴斯波克",
@@ -74,6 +78,10 @@ STRINGS = {
         "move_scissors": "剪刀",
         "move_lizard": "蜥蜴",
         "move_spock": "斯波克",
+        "score_entry": "{idx}. {name} - {score} ({difficulty})",
+        "difficulty_easy": "简单",
+        "difficulty_normal": "普通",
+        "difficulty_hard": "困难",
     },
 }
 
@@ -106,3 +114,7 @@ def verb(lang, word):
     if lang == "zh":
         return VERBS_ZH.get(word, word)
     return word
+
+
+def difficulty_name(lang, difficulty):
+    return t(lang, "difficulty_" + difficulty)

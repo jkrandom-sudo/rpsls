@@ -39,7 +39,8 @@ def show_scores(settings, input_func=input, out=sys.stdout):
     if not scores:
         _print(out, i18n.t(lang, "no_scores"))
     for idx, item in enumerate(scores, 1):
-        _print(out, f"{idx}. {item['name']} - {item['score']} ({item['difficulty']})")
+        _print(out, i18n.t(lang, "score_entry", idx=idx, name=item["name"],
+                           score=item["score"], difficulty=i18n.difficulty_name(lang, item["difficulty"])))
     input_func(i18n.t(lang, "press_enter"))
 
 
@@ -51,7 +52,7 @@ def settings_menu(settings, input_func=input, out=sys.stdout):
         _print(out, f"{i18n.t(lang, 'lang')}: {settings['lang']}")
         _print(out, f"{i18n.t(lang, 'sound')}: {i18n.t(lang, 'on' if settings['sound'] else 'off')}")
         _print(out, f"{i18n.t(lang, 'volume')}: {settings['volume']}")
-        _print(out, f"{i18n.t(lang, 'difficulty')}: {settings['difficulty']}")
+        _print(out, f"{i18n.t(lang, 'difficulty')}: {i18n.difficulty_name(lang, settings['difficulty'])}")
         _print(out, i18n.t(lang, "settings_menu"))
         choice = input_func(i18n.t(lang, "choice")).strip().lower()
         if choice == "1":
@@ -153,8 +154,9 @@ def main_menu(input_func=input, out=sys.stdout):
                 return
             if result and result["score"] > 0:
                 name = input_func(i18n.t(lang, "name_prompt")).strip()
-                if name:
-                    score_mod.add(name, result["score"], result["difficulty"])
+                valid, cleaned = score_mod.validate_name(name)
+                if valid:
+                    score_mod.add(cleaned, result["score"], result["difficulty"])
                     _print(out, i18n.t(lang, "saved"))
                 else:
                     _print(out, i18n.t(lang, "not_saved"))
